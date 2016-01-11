@@ -5,13 +5,19 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all.order(created_at: :asc)
+    @user_id = params[:user_id]
+    if (params[:user_id] != nil)
+      @posts = User.find(params[:user_id]).posts
+    else
+      @posts = Post.all.order(created_at: :asc)
+    end
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
     @comments = @post.comments
+    @own = own? @post.user_id
   end
 
   # GET /posts/new

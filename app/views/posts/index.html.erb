@@ -1,29 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Posts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Content</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.title %></td>
-        <td><%= post.content %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
+<% if params[:user_id] != nil %>
+  <p><h3><%= User.find(params[:user_id]).login %>'s posts</h3 ></p>
+<% end %>
 <%= link_to 'New Post', new_post_path %>
+<br>
+<% @posts.each do |post| %>
+  <div class="blog-post">
+    <h3><%= post.title %></h3><small><%= post.created_at.to_s.slice(0, 10) %></small>
+    <p><%= post.content %></p>
+    <div class="callout">
+      <ul class="menu simple">
+        <li>
+          <strong><%= link_to 'Comments', post %>  Written by:<%= link_to post.user.login, post.user %></strong>
+        </li>
+      </ul>
+    </div>
+  </div>
+<% end %>
+

@@ -1,29 +1,23 @@
-= current_user.id
-
 p#notice = notice
 
 p
-  strong Title:
-  = @post.title
+  strong = @post.title
 p
-  strong Content:
   = @post.content
+/- binding.pry
+- if @own
+  = link_to 'Edit', edit_post_path(@post)
+  |   
+  = link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' }
 .comments
   strong Comments:
   - @post.comments.each do |comment|
     = render comment
-    br
   
-= form_for(@post.comments.create([:text => @text])) do |f|
+= form_for(@post.comments.new, remote: true) do |f|
   .field
-    = f.label :text
-    br
     = f.text_field :text
-  = hidden_field(:post, :id)
-  = hidden_field(:user, :id)
+  = f.hidden_field :post_id
   .actions
     = f.submit
 
-= link_to 'Edit', edit_post_path(@post)
-br
-= link_to 'Back', posts_path

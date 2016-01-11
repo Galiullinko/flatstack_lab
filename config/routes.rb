@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :posts do
-    resources :comments, shallow: true
-  end
+  resources :comments
+  resources :posts
 
-  get "/users/:user_id/posts" => 'posts#index'
-  root to:"posts#index"
+  get "/" => 'posts#index'
+
+  get "/users/:user_id/posts" => 'posts#index', :as => :user 
+  root to:"posts#show"
 
   get '/user/sign_in', to: 'devise/sessions#new'
   get 'posts/new', to: 'posts#new'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
